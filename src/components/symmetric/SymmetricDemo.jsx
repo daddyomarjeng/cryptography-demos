@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import CryptoJS from 'crypto-js';
 import { copyToClipboard } from '../../utils/clipboard';
+import InfoIcon from '../shared/InfoIcon';
 
 const MODES = [
-  { label: 'AES-CBC', value: 'CBC' },
-  { label: 'AES-ECB', value: 'ECB' },
-  { label: 'AES-CTR', value: 'CTR' },
-  { label: 'Triple DES', value: 'TDES' },
+  { label: 'AES-CBC', value: 'CBC', term: 'aes_cbc' },
+  { label: 'AES-ECB', value: 'ECB', term: 'aes_ecb' },
+  { label: 'AES-CTR', value: 'CTR', term: 'aes_ctr' },
+  { label: 'Triple DES', value: 'TDES', term: 'triple_des' },
 ];
 
 function encrypt(plaintext, key, mode) {
@@ -35,7 +36,7 @@ function decrypt(ciphertext, key, mode) {
   }
 }
 
-function OutputRow({ label, value, isError }) {
+function OutputRow({ label, value, isError, infoTerm }) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -47,7 +48,10 @@ function OutputRow({ label, value, isError }) {
   return (
     <div className="form-group">
       <div className="output-label">
-        <span>{label}</span>
+        <span>
+          {label}
+          {infoTerm && <InfoIcon term={infoTerm} />}
+        </span>
         {value && !isError && (
           <button className="copy-btn" onClick={handleCopy}>
             {copied ? '✓ Copied' : 'Copy'}
@@ -100,8 +104,14 @@ export default function SymmetricDemo() {
   return (
     <div>
       <div className="info-box">
-        <strong>Symmetric Encryption</strong> uses the <strong>same key</strong> to both encrypt and decrypt.
-        Fast and efficient — ideal for large data. Common algorithms: <strong>AES</strong>, Triple DES.
+        <strong>Symmetric Encryption</strong>
+        <InfoIcon term="symmetric" />
+        {' '}uses the <strong>same key</strong>
+        <InfoIcon term="secret_key" />
+        {' '}to both encrypt and decrypt. Fast and efficient — ideal for large data.
+        Common algorithms: <strong>AES</strong>
+        <InfoIcon term="aes" />
+        , Triple DES<InfoIcon term="triple_des" />.
       </div>
 
       <div className="flow-diagram">
@@ -118,16 +128,21 @@ export default function SymmetricDemo() {
 
       {/* Algorithm Selector */}
       <div className="form-group">
-        <label>Algorithm</label>
+        <label>
+          Algorithm
+          <InfoIcon term="aes" />
+        </label>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           {MODES.map(m => (
-            <button
-              key={m.value}
-              className={`btn ${mode === m.value ? 'btn-primary' : 'btn-outline'}`}
-              onClick={() => { setMode(m.value); setEncrypted(''); setDecrypted(''); setError(''); }}
-            >
-              {m.label}
-            </button>
+            <span key={m.value} style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+              <button
+                className={`btn ${mode === m.value ? 'btn-primary' : 'btn-outline'}`}
+                onClick={() => { setMode(m.value); setEncrypted(''); setDecrypted(''); setError(''); }}
+              >
+                {m.label}
+              </button>
+              <InfoIcon term={m.term} />
+            </span>
           ))}
         </div>
       </div>
@@ -142,13 +157,16 @@ export default function SymmetricDemo() {
           <div className="card-header">
             <div className="card-icon blue">🔒</div>
             <div className="card-title">
-              <h2>Encrypt</h2>
+              <h2>Encrypt <InfoIcon term="encryption" /></h2>
               <p>Plaintext → Ciphertext</p>
             </div>
           </div>
 
           <div className="form-group">
-            <label>Plaintext Message</label>
+            <label>
+              Plaintext Message
+              <InfoIcon term="plaintext" />
+            </label>
             <textarea
               value={plaintext}
               onChange={e => setPlaintext(e.target.value)}
@@ -157,7 +175,10 @@ export default function SymmetricDemo() {
           </div>
 
           <div className="form-group">
-            <label>Secret Key</label>
+            <label>
+              Secret Key
+              <InfoIcon term="secret_key" />
+            </label>
             <input
               type="text"
               value={key}
@@ -171,7 +192,7 @@ export default function SymmetricDemo() {
           </button>
 
           <hr className="divider" />
-          <OutputRow label="Encrypted Output (Base64)" value={encrypted} />
+          <OutputRow label="Encrypted Output (Base64)" infoTerm="base64" value={encrypted} />
         </div>
 
         {/* Decrypt Panel */}
@@ -179,13 +200,16 @@ export default function SymmetricDemo() {
           <div className="card-header">
             <div className="card-icon green">🔓</div>
             <div className="card-title">
-              <h2>Decrypt</h2>
+              <h2>Decrypt <InfoIcon term="decryption" /></h2>
               <p>Ciphertext → Plaintext</p>
             </div>
           </div>
 
           <div className="form-group">
-            <label>Ciphertext (Base64)</label>
+            <label>
+              Ciphertext (Base64)
+              <InfoIcon term="ciphertext" />
+            </label>
             <textarea
               value={decryptInput}
               onChange={e => setDecryptInput(e.target.value)}
@@ -194,7 +218,10 @@ export default function SymmetricDemo() {
           </div>
 
           <div className="form-group">
-            <label>Secret Key (must match)</label>
+            <label>
+              Secret Key (must match)
+              <InfoIcon term="secret_key" />
+            </label>
             <input
               type="text"
               value={key}
@@ -210,6 +237,7 @@ export default function SymmetricDemo() {
           <hr className="divider" />
           <OutputRow
             label="Decrypted Output"
+            infoTerm="plaintext"
             value={decrypted}
             isError={!decrypted && error ? true : false}
           />
@@ -226,14 +254,17 @@ export default function SymmetricDemo() {
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px,1fr))', gap: 16 }}>
           {[
-            { icon: '🔑', title: 'Single Key', desc: 'One key is used for both encryption and decryption. Both parties must share this key securely.' },
-            { icon: '⚡', title: 'Fast Performance', desc: 'Much faster than asymmetric encryption. Ideal for encrypting large amounts of data in bulk.' },
-            { icon: '🛡️', title: 'AES Standard', desc: 'Advanced Encryption Standard (AES) is the gold standard. Used by governments and militaries worldwide.' },
-            { icon: '⚠️', title: 'Key Distribution', desc: 'The main challenge: securely sharing the secret key with the other party without interception.' },
+            { icon: '🔑', title: 'Single Key', term: 'secret_key', desc: 'One key is used for both encryption and decryption. Both parties must share this key securely.' },
+            { icon: '⚡', title: 'Fast Performance', term: null, desc: 'Much faster than asymmetric encryption. Ideal for encrypting large amounts of data in bulk.' },
+            { icon: '🛡️', title: 'AES Standard', term: 'aes', desc: 'Advanced Encryption Standard (AES) is the gold standard. Used by governments and militaries worldwide.' },
+            { icon: '⚠️', title: 'Key Distribution', term: 'key_exchange', desc: 'The main challenge: securely sharing the secret key with the other party without interception.' },
           ].map(item => (
             <div key={item.title} style={{ padding: 16, background: 'var(--surface2)', borderRadius: 8, border: '1px solid var(--border)' }}>
               <div style={{ fontSize: '1.5rem', marginBottom: 8 }}>{item.icon}</div>
-              <strong style={{ color: 'var(--text)' }}>{item.title}</strong>
+              <strong style={{ color: 'var(--text)' }}>
+                {item.title}
+                {item.term && <InfoIcon term={item.term} />}
+              </strong>
               <p style={{ marginTop: 6, fontSize: '0.82rem', color: 'var(--text-muted)' }}>{item.desc}</p>
             </div>
           ))}

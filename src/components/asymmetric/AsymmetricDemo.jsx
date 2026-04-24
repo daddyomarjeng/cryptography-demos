@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import forge from 'node-forge';
 import { copyToClipboard } from '../../utils/clipboard';
+import InfoIcon from '../shared/InfoIcon';
 
-function OutputRow({ label, value, isError, mono = true }) {
+function OutputRow({ label, value, isError, mono = true, infoTerm }) {
   const [copied, setCopied] = useState(false);
   const handleCopy = async () => {
     if (!value) return;
@@ -13,7 +14,10 @@ function OutputRow({ label, value, isError, mono = true }) {
   return (
     <div className="form-group">
       <div className="output-label">
-        <span>{label}</span>
+        <span>
+          {label}
+          {infoTerm && <InfoIcon term={infoTerm} />}
+        </span>
         {value && !isError && (
           <button className="copy-btn" onClick={handleCopy}>
             {copied ? '✓ Copied' : 'Copy'}
@@ -136,8 +140,18 @@ export default function AsymmetricDemo() {
   return (
     <div>
       <div className="info-box">
-        <strong>Asymmetric Encryption</strong> uses a <strong>key pair</strong>: a public key to encrypt, a private key to decrypt.
-        Also enables <strong>digital signatures</strong> for authentication. Common algorithms: <strong>RSA</strong>, ECC.
+        <strong>Asymmetric Encryption</strong>
+        <InfoIcon term="asymmetric" />
+        {' '}uses a <strong>key pair</strong>
+        <InfoIcon term="key_pair" />
+        : a <strong>public key</strong>
+        <InfoIcon term="public_key" />
+        {' '}to encrypt, a <strong>private key</strong>
+        <InfoIcon term="private_key" />
+        {' '}to decrypt. Also enables <strong>digital signatures</strong>
+        <InfoIcon term="digital_signature" />
+        {' '}for authentication. Algorithm: <strong>RSA</strong>
+        <InfoIcon term="rsa" />.
       </div>
 
       <div className="flow-diagram">
@@ -161,13 +175,21 @@ export default function AsymmetricDemo() {
         <div className="card-header">
           <div className="card-icon orange">🔐</div>
           <div className="card-title">
-            <h2>Step 1 — Generate RSA Key Pair</h2>
+            <h2>
+              Step 1 — Generate RSA
+              <InfoIcon term="rsa" />
+              {' '}Key Pair
+              <InfoIcon term="key_pair" />
+            </h2>
             <p>Creates a mathematically linked public/private key pair</p>
           </div>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
-          <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Key size:</span>
+          <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+            Key size
+            <InfoIcon term="key_size" />:
+          </span>
           {[1024, 2048, 4096].map(size => (
             <button
               key={size}
@@ -188,8 +210,8 @@ export default function AsymmetricDemo() {
           <>
             <hr className="divider" />
             <div className="two-col">
-              <OutputRow label="🔓 Public Key (share freely)" value={publicKey} mono={false} />
-              <OutputRow label="🗝️ Private Key (keep secret!)" value={privateKey} mono={false} />
+              <OutputRow label="🔓 Public Key (share freely)" infoTerm="public_key" value={publicKey} mono={false} />
+              <OutputRow label="🗝️ Private Key (keep secret!)" infoTerm="private_key" value={privateKey} mono={false} />
             </div>
           </>
         )}
@@ -201,13 +223,16 @@ export default function AsymmetricDemo() {
           <div className="card-header">
             <div className="card-icon blue">🔒</div>
             <div className="card-title">
-              <h2>Encrypt with Public Key</h2>
+              <h2>Encrypt with Public Key <InfoIcon term="public_key" /></h2>
               <p>Anyone can encrypt using the public key</p>
             </div>
           </div>
 
           <div className="form-group">
-            <label>Message to Encrypt</label>
+            <label>
+              Message to Encrypt
+              <InfoIcon term="plaintext" />
+            </label>
             <textarea
               value={plaintext}
               onChange={e => setPlaintext(e.target.value)}
@@ -220,20 +245,25 @@ export default function AsymmetricDemo() {
           </button>
 
           <hr className="divider" />
-          <OutputRow label="Encrypted Output (RSA-OAEP, Base64)" value={encrypted} />
+          <OutputRow label="Encrypted Output (RSA-OAEP, Base64)" infoTerm="rsa_oaep" value={encrypted} />
         </div>
 
         <div className="card">
           <div className="card-header">
             <div className="card-icon green">🔓</div>
             <div className="card-title">
-              <h2>Decrypt with Private Key</h2>
+              <h2>Decrypt with Private Key <InfoIcon term="private_key" /></h2>
               <p>Only the private key holder can decrypt</p>
             </div>
           </div>
 
           <div className="form-group">
-            <label>Ciphertext (Base64)</label>
+            <label>
+              Ciphertext
+              <InfoIcon term="ciphertext" />
+              {' '}(Base64
+              <InfoIcon term="base64" />)
+            </label>
             <textarea
               value={decryptInput}
               onChange={e => setDecryptInput(e.target.value)}
@@ -246,7 +276,7 @@ export default function AsymmetricDemo() {
           </button>
 
           <hr className="divider" />
-          <OutputRow label="Decrypted Message" value={decrypted} />
+          <OutputRow label="Decrypted Message" infoTerm="plaintext" value={decrypted} />
         </div>
       </div>
 
@@ -255,8 +285,13 @@ export default function AsymmetricDemo() {
         <div className="card-header">
           <div className="card-icon red">✍️</div>
           <div className="card-title">
-            <h2>Digital Signatures (Sign &amp; Verify)</h2>
-            <p>Prove authenticity and integrity using SHA-256 + RSA</p>
+            <h2>Digital Signatures <InfoIcon term="digital_signature" /> (Sign &amp; Verify)</h2>
+            <p>
+              Prove authenticity and integrity using SHA-256
+              <InfoIcon term="sha256" />
+              {' '}+ RSA
+              <InfoIcon term="rsa" />
+            </p>
           </div>
         </div>
 
@@ -274,7 +309,7 @@ export default function AsymmetricDemo() {
               ✍️ Sign with Private Key
             </button>
             <hr className="divider" />
-            <OutputRow label="Digital Signature (Base64)" value={signature} />
+            <OutputRow label="Digital Signature (Base64)" infoTerm="digital_signature" value={signature} />
           </div>
 
           <div>
@@ -287,7 +322,12 @@ export default function AsymmetricDemo() {
               />
             </div>
             <div className="form-group">
-              <label>Signature (Base64)</label>
+              <label>
+                Signature
+                <InfoIcon term="digital_signature" />
+                {' '}(Base64
+                <InfoIcon term="base64" />)
+              </label>
               <textarea
                 value={verifySig}
                 onChange={e => setVerifySig(e.target.value)}
@@ -322,14 +362,17 @@ export default function AsymmetricDemo() {
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px,1fr))', gap: 16 }}>
           {[
-            { icon: '🔑', title: 'Key Pair', desc: 'A mathematically linked pair: public key (shared openly) and private key (kept secret by owner).' },
-            { icon: '📦', title: 'Encrypt with Public', desc: 'Anyone with your public key can encrypt a message. Only your private key can decrypt it.' },
-            { icon: '✍️', title: 'Sign with Private', desc: 'You sign data with your private key. Anyone with your public key can verify the signature.' },
-            { icon: '🐢', title: 'Slower but Safer', desc: 'Much slower than symmetric encryption. Often used to exchange a symmetric key (hybrid approach).' },
+            { icon: '🔑', title: 'Key Pair', term: 'key_pair', desc: 'A mathematically linked pair: public key (shared openly) and private key (kept secret by owner).' },
+            { icon: '📦', title: 'Encrypt with Public', term: 'public_key', desc: 'Anyone with your public key can encrypt a message. Only your private key can decrypt it.' },
+            { icon: '✍️', title: 'Sign with Private', term: 'digital_signature', desc: 'You sign data with your private key. Anyone with your public key can verify the signature.' },
+            { icon: '🐢', title: 'Slower but Safer', term: null, desc: 'Much slower than symmetric encryption. Often used to exchange a symmetric key (hybrid approach).' },
           ].map(item => (
             <div key={item.title} style={{ padding: 16, background: 'var(--surface2)', borderRadius: 8, border: '1px solid var(--border)' }}>
               <div style={{ fontSize: '1.5rem', marginBottom: 8 }}>{item.icon}</div>
-              <strong style={{ color: 'var(--text)' }}>{item.title}</strong>
+              <strong style={{ color: 'var(--text)' }}>
+                {item.title}
+                {item.term && <InfoIcon term={item.term} />}
+              </strong>
               <p style={{ marginTop: 6, fontSize: '0.82rem', color: 'var(--text-muted)' }}>{item.desc}</p>
             </div>
           ))}

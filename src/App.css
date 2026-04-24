@@ -352,3 +352,285 @@
   color: var(--accent);
   padding: 0 6px;
 }
+
+/* ─── UTG Academic Header ────────────────────── */
+.utg-header {
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 32px;
+  background: linear-gradient(180deg, rgba(88,166,255,0.04) 0%, transparent 100%);
+}
+
+.utg-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 8px 16px;
+  gap: 16px;
+}
+
+.utg-crest {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(88,166,255,0.1);
+  border: 2px solid rgba(88,166,255,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.utg-crest-icon { font-size: 1.8rem; }
+.utg-crest-right { background: rgba(63,185,80,0.1); border-color: rgba(63,185,80,0.25); }
+
+.utg-institution {
+  text-align: center;
+  flex: 1;
+}
+
+.utg-uni-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.3px;
+  margin-bottom: 4px;
+}
+
+.utg-programme {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.utg-divider-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), var(--accent), var(--border), transparent);
+  margin: 0 0 20px;
+}
+
+.utg-title-block {
+  text-align: center;
+  padding: 0 16px 20px;
+}
+
+.utg-module-tag {
+  display: inline-block;
+  background: rgba(88,166,255,0.1);
+  border: 1px solid rgba(88,166,255,0.3);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 0.76rem;
+  color: var(--accent);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.utg-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin: 0 0 10px;
+  background: linear-gradient(135deg, #e6edf3, var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.utg-subtitle {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.utg-meta-card {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+}
+
+.utg-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.utg-meta-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.utg-meta-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.utg-meta-value {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.utg-meta-sep {
+  width: 1px;
+  height: 32px;
+  background: var(--border);
+}
+
+/* ─── Tabs wrapper ────────────────────────────── */
+.tabs-wrapper {
+  margin-bottom: 32px;
+}
+
+/* ─── UTG Footer ──────────────────────────────── */
+.utg-footer {
+  border-top: 1px solid var(--border);
+  margin-top: 48px;
+  padding: 20px 0;
+}
+
+.utg-footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.utg-footer-sep { color: var(--border); }
+
+/* ─── Info Icon Button ────────────────────────── */
+.info-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(88,166,255,0.15);
+  border: 1px solid rgba(88,166,255,0.3);
+  color: var(--accent);
+  font-size: 0.7rem;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 6px;
+  vertical-align: middle;
+  transition: all 0.18s;
+  line-height: 1;
+  font-style: normal;
+}
+
+.info-icon-btn:hover {
+  background: rgba(88,166,255,0.3);
+  border-color: var(--accent);
+  transform: scale(1.15);
+}
+
+/* ─── Info Modal ──────────────────────────────── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+.modal-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  max-width: 520px;
+  width: 100%;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+  animation: slideUp 0.2s ease;
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+}
+
+.modal-icon { font-size: 1.4rem; flex-shrink: 0; }
+
+.modal-title {
+  flex: 1;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.modal-close {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px 8px;
+  font-size: 0.85rem;
+  transition: all 0.18s;
+  flex-shrink: 0;
+}
+.modal-close:hover { border-color: var(--danger); color: var(--danger); }
+
+.modal-body {
+  padding: 20px;
+}
+
+.modal-body p {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.8;
+  margin: 0;
+}
+
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+  background: var(--surface2);
+}
+
+.modal-tag {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  background: rgba(88,166,255,0.08);
+  border: 1px solid rgba(88,166,255,0.2);
+  border-radius: 20px;
+  padding: 3px 10px;
+  color: var(--accent);
+}
+
+/* ─── Responsive ──────────────────────────────── */
+@media (max-width: 600px) {
+  .utg-top-bar { flex-direction: column; }
+  .utg-crest-right { display: none; }
+  .utg-meta-sep { display: none; }
+  .utg-meta-row { gap: 16px; }
+  .utg-title { font-size: 1.6rem; }
+  .utg-footer-inner { flex-direction: column; gap: 4px; }
+  .utg-footer-sep { display: none; }
+}
