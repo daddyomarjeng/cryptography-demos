@@ -107,16 +107,28 @@ const ALL_MODULES = CATEGORIES.flatMap(c => c.modules);
 
 export default function App() {
   const [activeId, setActiveId]       = useState('symmetric');
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(() => window.innerWidth >= 768);
   const [collapsed, setCollapsed]     = useState({});
 
   const toggleCategory = (id) =>
     setCollapsed(prev => ({ ...prev, [id]: !prev[id] }));
 
+  const isMobile = () => window.innerWidth < 768;
+
+  const handleNavSelect = (id) => {
+    setActiveId(id);
+    if (isMobile()) setSidebarOpen(false);
+  };
+
   const ActiveComponent = ALL_MODULES.find(m => m.id === activeId)?.Component;
 
   return (
     <div className="app-shell">
+      {/* ── Mobile overlay ────────────────────────────────── */}
+      {sidebarOpen && (
+        <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)} />
+      )}
+
       {/* ── Sidebar ───────────────────────────────────────── */}
       <aside className={`sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
         {/* Sidebar header */}
@@ -157,7 +169,7 @@ export default function App() {
                       <button
                         key={mid}
                         className={`sidebar-item ${activeId === mid ? 'active' : ''}`}
-                        onClick={() => setActiveId(mid)}
+                        onClick={() => handleNavSelect(mid)}
                         title={!sidebarOpen ? mlabel : undefined}
                       >
                         <MIcon size={14} strokeWidth={2} />
@@ -174,7 +186,7 @@ export default function App() {
           <div className="sidebar-group">
             <button
               className={`sidebar-category ${activeId === 'about' ? 'active' : ''}`}
-              onClick={() => setActiveId('about')}
+              onClick={() => handleNavSelect('about')}
               title={!sidebarOpen ? 'About' : undefined}
             >
               <Info size={16} strokeWidth={1.8} />
@@ -204,6 +216,9 @@ export default function App() {
         {/* Top bar */}
         <header className="topbar">
           <div className="topbar-left">
+            <button className="topbar-menu-btn" onClick={() => setSidebarOpen(o => !o)}>
+              <Menu size={18} />
+            </button>
             <Shield size={18} strokeWidth={1.5} style={{ color: 'var(--accent)' }} />
             <span className="topbar-title">
               {activeId === 'about'
