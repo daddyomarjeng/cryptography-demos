@@ -53,11 +53,15 @@ export default function AsymmetricDemo() {
   const [verifySig, setVerifySig] = useState('');
   const [verifyResult, setVerifyResult] = useState(null);
 
-  const [error, setError] = useState('');
+  const [keyGenError, setKeyGenError] = useState('');
+  const [encryptError, setEncryptError] = useState('');
+  const [decryptError, setDecryptError] = useState('');
+  const [signError, setSignError] = useState('');
+  const [verifyError, setVerifyError] = useState('');
 
   const handleGenerate = () => {
     setGenerating(true);
-    setError('');
+    setKeyGenError('');
     setEncrypted(''); setDecrypted(''); setSignature(''); setVerifyResult(null);
     setTimeout(() => {
       try {
@@ -65,16 +69,16 @@ export default function AsymmetricDemo() {
         setPublicKey(forge.pki.publicKeyToPem(keypair.publicKey));
         setPrivateKey(forge.pki.privateKeyToPem(keypair.privateKey));
       } catch (e) {
-        setError('Key generation failed: ' + e.message);
+        setKeyGenError('Key generation failed: ' + e.message);
       }
       setGenerating(false);
     }, 100);
   };
 
   const handleEncrypt = () => {
-    setError('');
-    if (!publicKey) { setError('Generate a key pair first.'); return; }
-    if (!plaintext.trim()) { setError('Enter a message to encrypt.'); return; }
+    setEncryptError('');
+    if (!publicKey) { setEncryptError('Please generate a key pair first.'); return; }
+    if (!plaintext.trim()) { setEncryptError('Please enter a message to encrypt.'); return; }
     try {
       const pub = forge.pki.publicKeyFromPem(publicKey);
       const enc = pub.encrypt(plaintext, 'RSA-OAEP');
@@ -82,28 +86,28 @@ export default function AsymmetricDemo() {
       setDecryptInput(forge.util.encode64(enc));
       setDecrypted('');
     } catch (e) {
-      setError('Encryption failed: ' + e.message);
+      setEncryptError('Encryption failed: ' + e.message);
     }
   };
 
   const handleDecrypt = () => {
-    setError('');
-    if (!privateKey) { setError('Generate a key pair first.'); return; }
-    if (!decryptInput.trim()) { setError('Enter ciphertext to decrypt.'); return; }
+    setDecryptError('');
+    if (!privateKey) { setDecryptError('Please generate a key pair first.'); return; }
+    if (!decryptInput.trim()) { setDecryptError('Please enter a ciphertext first.'); return; }
     try {
       const priv = forge.pki.privateKeyFromPem(privateKey);
       const bytes = forge.util.decode64(decryptInput);
       setDecrypted(priv.decrypt(bytes, 'RSA-OAEP'));
     } catch (e) {
-      setError('Decryption failed: ' + e.message);
+      setDecryptError('Decryption failed: ' + e.message);
       setDecrypted('');
     }
   };
 
   const handleSign = () => {
-    setError('');
-    if (!privateKey) { setError('Generate a key pair first.'); return; }
-    if (!signInput.trim()) { setError('Enter a message to sign.'); return; }
+    setSignError('');
+    if (!privateKey) { setSignError('Please generate a key pair first.'); return; }
+    if (!signInput.trim()) { setSignError('Please enter a message to sign.'); return; }
     try {
       const priv = forge.pki.privateKeyFromPem(privateKey);
       const md = forge.md.sha256.create();
@@ -114,14 +118,15 @@ export default function AsymmetricDemo() {
       setVerifySig(b64);
       setVerifyResult(null);
     } catch (e) {
-      setError('Signing failed: ' + e.message);
+      setSignError('Signing failed: ' + e.message);
     }
   };
 
   const handleVerify = () => {
-    setError('');
-    if (!publicKey) { setError('Generate a key pair first.'); return; }
-    if (!verifyInput.trim() || !verifySig.trim()) { setError('Enter both message and signature.'); return; }
+    setVerifyError('');
+    if (!publicKey) { setVerifyError('Please generate a key pair first.'); return; }
+    if (!verifyInput.trim()) { setVerifyError('Please enter the message to verify.'); return; }
+    if (!verifySig.trim()) { setVerifyError('Please enter the signature to verify.'); return; }
     try {
       const pub = forge.pki.publicKeyFromPem(publicKey);
       const md = forge.md.sha256.create();
@@ -177,8 +182,6 @@ export default function AsymmetricDemo() {
         </div>
       </div>
 
-      {error && <div className="output-box error-text" style={{ marginBottom: 16 }}>⚠ {error}</div>}
-
       {/* Key Generation */}
       <div className="card">
         <div className="card-header">
@@ -214,6 +217,7 @@ export default function AsymmetricDemo() {
             ? <><Loader2 size={14} className="spin" /> Generating…</>
             : <><LockKeyhole size={14} /> Generate Key Pair</>}
         </button>
+        {keyGenError && <div className="output-box error-text" style={{ marginTop: 12 }}>⚠ {keyGenError}</div>}
 
         {(publicKey || privateKey) && (
           <>
@@ -246,6 +250,7 @@ export default function AsymmetricDemo() {
           <button className="btn btn-primary" onClick={handleEncrypt}>
             <Lock size={14} /> Encrypt
           </button>
+          {encryptError && <div className="output-box error-text" style={{ marginTop: 12 }}>⚠ {encryptError}</div>}
           <hr className="divider" />
           <OutputRow label="Encrypted Output (RSA-OAEP, Base64)" infoTerm="rsa_oaep" value={encrypted} />
         </div>
@@ -268,6 +273,7 @@ export default function AsymmetricDemo() {
           <button className="btn btn-success" onClick={handleDecrypt}>
             <Unlock size={14} /> Decrypt
           </button>
+          {decryptError && <div className="output-box error-text" style={{ marginTop: 12 }}>⚠ {decryptError}</div>}
           <hr className="divider" />
           <OutputRow label="Decrypted Message" infoTerm="plaintext" value={decrypted} />
         </div>
@@ -295,6 +301,7 @@ export default function AsymmetricDemo() {
             <button className="btn btn-danger" onClick={handleSign}>
               <PenLine size={14} /> Sign with Private Key
             </button>
+            {signError && <div className="output-box error-text" style={{ marginTop: 12 }}>⚠ {signError}</div>}
             <hr className="divider" />
             <OutputRow label="Digital Signature (Base64)" infoTerm="digital_signature" value={signature} />
           </div>
@@ -314,6 +321,7 @@ export default function AsymmetricDemo() {
             <button className="btn btn-outline" onClick={handleVerify}>
               <CheckCircle size={14} /> Verify with Public Key
             </button>
+            {verifyError && <div className="output-box error-text" style={{ marginTop: 12 }}>⚠ {verifyError}</div>}
 
             {verifyResult !== null && (
               <div style={{ marginTop: 16 }}>
