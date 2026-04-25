@@ -111,4 +111,12 @@ export const GLOSSARY = {
     title: 'Key Exchange',
     body: 'Key exchange (or key establishment) is the process by which two parties securely agree on a shared secret key over an insecure channel. With symmetric encryption, both parties must somehow share the same secret key without an attacker intercepting it. Common solutions include Diffie-Hellman key exchange, RSA key transport, or using a pre-shared key. This is the fundamental challenge of symmetric cryptography.',
   },
+  sql_injection: {
+    title: 'SQL Injection (SQLi)',
+    body: "SQL Injection is an attack where malicious SQL code is inserted into an input field and executed by the database. It happens when user input is directly concatenated into an SQL query string without sanitization. Attackers can bypass authentication, read sensitive data, modify or delete records, or even execute commands on the database server. It consistently ranks as one of the most critical web vulnerabilities (OWASP Top 10).",
+  },
+  parameterized_query: {
+    title: 'Parameterized Query (Prepared Statement)',
+    body: "A parameterized query separates SQL code from user data by using placeholders (e.g., ? or $1) in the query template. The database driver sends the query structure and the data values separately — user input is always treated as a literal value, never as SQL code. This completely eliminates SQL injection for that query, regardless of what the user types. Always prefer parameterized queries over string concatenation.",
+  },
 };
