@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import bcrypt from 'bcryptjs';
 import CryptoJS from 'crypto-js';
 import { Key, Clock, Shield } from 'lucide-react';
+import InfoIcon from '../shared/InfoIcon';
 
 const PBKDF2_ITERATIONS = [1000, 10000, 100000, 600000];
 
@@ -60,6 +61,19 @@ export default function PasswordHashingDemo() {
 
   return (
     <div>
+      <div className="info-box">
+        <strong>Password hashing</strong> is a one-way transformation designed specifically for
+        storing passwords securely. Unlike fast hash functions (SHA-256), algorithms like{' '}
+        <strong>bcrypt</strong>
+        <InfoIcon term="bcrypt" />
+        {' '}and <strong>PBKDF2</strong>
+        <InfoIcon term="pbkdf2" />
+        {' '}are intentionally slow and include a random <strong>salt</strong>
+        <InfoIcon term="salt" />
+        {' '}to defeat pre-computed (rainbow table) attacks. The cost factor can be increased
+        over time to stay ahead of faster hardware.
+      </div>
+
       {/* bcrypt */}
       <div className="card">
         <div className="card-header">
