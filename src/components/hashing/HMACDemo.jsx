@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import CryptoJS from 'crypto-js';
 import { Fingerprint, CheckCircle, XCircle } from 'lucide-react';
+import InfoIcon from '../shared/InfoIcon';
 
 const ALGOS = [
   { id: 'HmacSHA256', label: 'HMAC-SHA256', fn: (msg, key) => CryptoJS.HmacSHA256(msg, key).toString() },
@@ -24,6 +25,17 @@ export default function HMACDemo() {
 
   return (
     <div>
+      <div className="info-box">
+        <strong>HMAC</strong>
+        <InfoIcon term="hmac" />
+        {' '}(Hash-based Message Authentication Code) combines a <strong>secret key</strong>
+        <InfoIcon term="secret_key" />
+        {' '}with a hash function to produce an authentication code. It guarantees both
+        {' '}<strong>integrity</strong> (the message was not modified) and <strong>authenticity</strong>
+        {' '}(the sender knows the secret). Unlike a plain hash, an attacker without the key cannot forge
+        a valid MAC. Widely used in JWT tokens and API authentication.
+      </div>
+
       <div className="card">
         <div className="card-header">
           <div className="card-icon green"><Fingerprint size={18} strokeWidth={2} /></div>
