@@ -1,4 +1,4 @@
-import { Target, Trophy, Settings2, Package, Wrench, BookMarked, Check, User, Globe } from 'lucide-react';
+import { Target, Trophy, Settings2, Package, Wrench, Check, User, Globe } from 'lucide-react';
 
 export default function AboutPage() {
   return (
@@ -245,30 +245,6 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* References */}
-      <div className="card">
-        <div className="card-header">
-          <div className="card-icon orange"><BookMarked size={18} strokeWidth={2} /></div>
-          <div className="card-title">
-            <h2>References</h2>
-            <p>Technical and academic sources</p>
-          </div>
-        </div>
-        <ol style={{ paddingLeft: 20, color: 'var(--text-muted)', fontSize: '0.88rem', lineHeight: 2 }}>
-          {[
-            'W. Stallings, Cryptography and Network Security: Principles and Practice, 7th ed. Pearson, 2017.',
-            'National Institute of Standards and Technology (NIST), "Announcing the Advanced Encryption Standard (AES)," FIPS PUB 197, Nov. 2001. [Online]. Available: https://csrc.nist.gov/publications/fips/fips197/fips-197.pdf',
-            'R. L. Rivest, A. Shamir, and L. Adleman, "A Method for Obtaining Digital Signatures and Public-Key Cryptosystems," Communications of the ACM, vol. 21, no. 2, pp. 120–126, 1978.',
-            'M. Bellare and P. Rogaway, "Optimal Asymmetric Encryption," Proc. EUROCRYPT 1994, Lecture Notes in Computer Science, vol. 950. Springer, Berlin, Heidelberg, 1995.',
-            'NIST, "Secure Hash Standard (SHS)," FIPS PUB 180-4, Aug. 2015. [Online]. Available: https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf',
-            'B. Schneier, Applied Cryptography: Protocols, Algorithms, and Source Code in C, 2nd ed. John Wiley & Sons, 1996.',
-            'J. Mott, "CryptoJS JavaScript library." [Online]. Available: https://github.com/brix/crypto-js',
-            'Digital Bazaar, "node-forge: A native implementation of TLS and various cryptography tools in JavaScript." [Online]. Available: https://github.com/digitalbazaar/forge',
-          ].map((ref, i) => (
-            <li key={i} style={{ paddingLeft: 6 }}>{ref}</li>
-          ))}
-        </ol>
-      </div>
     </div>
   );
 }
