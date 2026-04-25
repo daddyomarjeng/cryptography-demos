@@ -201,6 +201,12 @@ export default function SymmetricDemo() {
             <label>Secret Key (must match) <InfoIcon term="secret_key" /></label>
             <input type="text" value={key} onChange={e => setKey(e.target.value)} placeholder="Enter secret key…" />
           </div>
+          {!decryptInput.trim() && (
+            <div className="warn-box" style={{ marginBottom: 12 }}>⚠ Encrypt a message first, or paste a ciphertext above.</div>
+          )}
+          {decryptInput.trim() && !key.trim() && (
+            <div className="warn-box" style={{ marginBottom: 12 }}>⚠ Enter the secret key used during encryption.</div>
+          )}
           <button className="btn btn-success" onClick={handleDecrypt}>
             <Unlock size={14} /> Decrypt
           </button>
