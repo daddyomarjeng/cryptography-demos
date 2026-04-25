@@ -240,7 +240,10 @@ export default function AsymmetricDemo() {
             <label>Message to Encrypt <InfoIcon term="plaintext" /></label>
             <textarea value={plaintext} onChange={e => setPlaintext(e.target.value)} placeholder="Enter message…" />
           </div>
-          <button className="btn btn-primary" onClick={handleEncrypt} disabled={!publicKey}>
+          {!publicKey && (
+            <div className="warn-box" style={{ marginBottom: 12 }}>⚠ Generate a key pair in Step 1 first.</div>
+          )}
+          <button className="btn btn-primary" onClick={handleEncrypt}>
             <Lock size={14} /> Encrypt
           </button>
           <hr className="divider" />
@@ -259,7 +262,10 @@ export default function AsymmetricDemo() {
             <label>Ciphertext <InfoIcon term="ciphertext" /> (Base64 <InfoIcon term="base64" />)</label>
             <textarea value={decryptInput} onChange={e => setDecryptInput(e.target.value)} placeholder="Paste encrypted text…" />
           </div>
-          <button className="btn btn-success" onClick={handleDecrypt} disabled={!privateKey}>
+          {!privateKey && (
+            <div className="warn-box" style={{ marginBottom: 12 }}>⚠ Generate a key pair in Step 1 first.</div>
+          )}
+          <button className="btn btn-success" onClick={handleDecrypt}>
             <Unlock size={14} /> Decrypt
           </button>
           <hr className="divider" />
@@ -283,7 +289,10 @@ export default function AsymmetricDemo() {
               <label>Message to Sign</label>
               <textarea value={signInput} onChange={e => setSignInput(e.target.value)} placeholder="Enter message to sign…" />
             </div>
-            <button className="btn btn-danger" onClick={handleSign} disabled={!privateKey}>
+            {!privateKey && (
+              <div className="warn-box" style={{ marginBottom: 12 }}>⚠ Generate a key pair in Step 1 first.</div>
+            )}
+            <button className="btn btn-danger" onClick={handleSign}>
               <PenLine size={14} /> Sign with Private Key
             </button>
             <hr className="divider" />
@@ -299,7 +308,10 @@ export default function AsymmetricDemo() {
               <label>Signature <InfoIcon term="digital_signature" /> (Base64 <InfoIcon term="base64" />)</label>
               <textarea value={verifySig} onChange={e => setVerifySig(e.target.value)} placeholder="Paste signature…" style={{ minHeight: 60 }} />
             </div>
-            <button className="btn btn-outline" onClick={handleVerify} disabled={!publicKey}>
+            {!publicKey && (
+              <div className="warn-box" style={{ marginBottom: 12 }}>⚠ Generate a key pair in Step 1 first.</div>
+            )}
+            <button className="btn btn-outline" onClick={handleVerify}>
               <CheckCircle size={14} /> Verify with Public Key
             </button>
 
