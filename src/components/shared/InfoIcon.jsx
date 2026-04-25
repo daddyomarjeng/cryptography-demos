@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Info } from 'lucide-react';
 import InfoModal from './InfoModal';
 
 export default function InfoIcon({ term }) {
@@ -12,7 +13,7 @@ export default function InfoIcon({ term }) {
         title="Learn more"
         aria-label={`Info about ${term}`}
       >
-        ⓘ
+        <Info size={10} strokeWidth={2.5} />
       </button>
       {open && <InfoModal term={term} onClose={() => setOpen(false)} />}
     </>

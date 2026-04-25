@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { BookOpen, X } from 'lucide-react';
 import { GLOSSARY } from '../../data/glossary';
 
 export default function InfoModal({ term, onClose }) {
@@ -16,9 +17,11 @@ export default function InfoModal({ term, onClose }) {
     <div className="modal-backdrop" onClick={onClose} role="dialog" aria-modal="true">
       <div className="modal-box" onClick={e => e.stopPropagation()}>
         <div className="modal-header">
-          <span className="modal-icon">📖</span>
+          <BookOpen size={18} strokeWidth={2} style={{ color: 'var(--accent)', flexShrink: 0 }} />
           <h3 className="modal-title">{entry.title}</h3>
-          <button className="modal-close" onClick={onClose} aria-label="Close">✕</button>
+          <button className="modal-close" onClick={onClose} aria-label="Close">
+            <X size={14} />
+          </button>
         </div>
         <div className="modal-body">
           <p>{entry.body}</p>

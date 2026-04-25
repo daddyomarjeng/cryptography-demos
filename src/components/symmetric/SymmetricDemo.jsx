@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { FileText, Key, Lock, Unlock, Zap, Shield, AlertTriangle, BookMarked } from 'lucide-react';
 import CryptoJS from 'crypto-js';
 import { copyToClipboard } from '../../utils/clipboard';
 import InfoIcon from '../shared/InfoIcon';
@@ -11,9 +12,7 @@ const MODES = [
 ];
 
 function encrypt(plaintext, key, mode) {
-  if (mode === 'TDES') {
-    return CryptoJS.TripleDES.encrypt(plaintext, key).toString();
-  }
+  if (mode === 'TDES') return CryptoJS.TripleDES.encrypt(plaintext, key).toString();
   const opts = {};
   if (mode === 'ECB') opts.mode = CryptoJS.mode.ECB;
   if (mode === 'CTR') opts.mode = CryptoJS.mode.CTR;
@@ -23,14 +22,12 @@ function encrypt(plaintext, key, mode) {
 function decrypt(ciphertext, key, mode) {
   try {
     if (mode === 'TDES') {
-      const bytes = CryptoJS.TripleDES.decrypt(ciphertext, key);
-      return bytes.toString(CryptoJS.enc.Utf8);
+      return CryptoJS.TripleDES.decrypt(ciphertext, key).toString(CryptoJS.enc.Utf8);
     }
     const opts = {};
     if (mode === 'ECB') opts.mode = CryptoJS.mode.ECB;
     if (mode === 'CTR') opts.mode = CryptoJS.mode.CTR;
-    const bytes = CryptoJS.AES.decrypt(ciphertext, key, opts);
-    return bytes.toString(CryptoJS.enc.Utf8);
+    return CryptoJS.AES.decrypt(ciphertext, key, opts).toString(CryptoJS.enc.Utf8);
   } catch {
     return null;
   }
@@ -38,24 +35,17 @@ function decrypt(ciphertext, key, mode) {
 
 function OutputRow({ label, value, isError, infoTerm }) {
   const [copied, setCopied] = useState(false);
-
   const handleCopy = async () => {
     if (!value) return;
     const ok = await copyToClipboard(value);
     if (ok) { setCopied(true); setTimeout(() => setCopied(false), 1800); }
   };
-
   return (
     <div className="form-group">
       <div className="output-label">
-        <span>
-          {label}
-          {infoTerm && <InfoIcon term={infoTerm} />}
-        </span>
+        <span>{label}{infoTerm && <InfoIcon term={infoTerm} />}</span>
         {value && !isError && (
-          <button className="copy-btn" onClick={handleCopy}>
-            {copied ? '✓ Copied' : 'Copy'}
-          </button>
+          <button className="copy-btn" onClick={handleCopy}>{copied ? 'Copied' : 'Copy'}</button>
         )}
       </div>
       <div className={`output-box ${isError ? 'error-text' : ''} ${!value ? 'muted-text' : ''}`}>
@@ -114,24 +104,37 @@ export default function SymmetricDemo() {
         , Triple DES<InfoIcon term="triple_des" />.
       </div>
 
+      {/* Flow Diagram */}
       <div className="flow-diagram">
-        <div className="flow-node"><span className="icon">📄</span><span>Plaintext</span></div>
+        <div className="flow-node">
+          <FileText size={20} strokeWidth={1.5} style={{ margin: '0 auto 4px' }} />
+          <span>Plaintext</span>
+        </div>
         <div className="flow-arrow">→</div>
-        <div className="flow-node"><span className="icon">🔑</span><span>Secret Key</span></div>
+        <div className="flow-node">
+          <Key size={20} strokeWidth={1.5} style={{ margin: '0 auto 4px' }} />
+          <span>Secret Key</span>
+        </div>
         <div className="flow-arrow">→</div>
-        <div className="flow-node"><span className="icon">🔒</span><span>Ciphertext</span></div>
+        <div className="flow-node">
+          <Lock size={20} strokeWidth={1.5} style={{ margin: '0 auto 4px' }} />
+          <span>Ciphertext</span>
+        </div>
         <div className="flow-arrow">→</div>
-        <div className="flow-node"><span className="icon">🔑</span><span>Same Key</span></div>
+        <div className="flow-node">
+          <Key size={20} strokeWidth={1.5} style={{ margin: '0 auto 4px' }} />
+          <span>Same Key</span>
+        </div>
         <div className="flow-arrow">→</div>
-        <div className="flow-node"><span className="icon">📄</span><span>Plaintext</span></div>
+        <div className="flow-node">
+          <FileText size={20} strokeWidth={1.5} style={{ margin: '0 auto 4px' }} />
+          <span>Plaintext</span>
+        </div>
       </div>
 
       {/* Algorithm Selector */}
       <div className="form-group">
-        <label>
-          Algorithm
-          <InfoIcon term="aes" />
-        </label>
+        <label>Algorithm <InfoIcon term="aes" /></label>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           {MODES.map(m => (
             <span key={m.value} style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
@@ -147,50 +150,29 @@ export default function SymmetricDemo() {
         </div>
       </div>
 
-      {error && (
-        <div className="output-box error-text" style={{ marginBottom: 16 }}>⚠ {error}</div>
-      )}
+      {error && <div className="output-box error-text" style={{ marginBottom: 16 }}>⚠ {error}</div>}
 
       <div className="two-col">
         {/* Encrypt Panel */}
         <div className="card">
           <div className="card-header">
-            <div className="card-icon blue">🔒</div>
+            <div className="card-icon blue"><Lock size={18} strokeWidth={2} /></div>
             <div className="card-title">
               <h2>Encrypt <InfoIcon term="encryption" /></h2>
               <p>Plaintext → Ciphertext</p>
             </div>
           </div>
-
           <div className="form-group">
-            <label>
-              Plaintext Message
-              <InfoIcon term="plaintext" />
-            </label>
-            <textarea
-              value={plaintext}
-              onChange={e => setPlaintext(e.target.value)}
-              placeholder="Enter text to encrypt…"
-            />
+            <label>Plaintext Message <InfoIcon term="plaintext" /></label>
+            <textarea value={plaintext} onChange={e => setPlaintext(e.target.value)} placeholder="Enter text to encrypt…" />
           </div>
-
           <div className="form-group">
-            <label>
-              Secret Key
-              <InfoIcon term="secret_key" />
-            </label>
-            <input
-              type="text"
-              value={key}
-              onChange={e => setKey(e.target.value)}
-              placeholder="Enter secret key…"
-            />
+            <label>Secret Key <InfoIcon term="secret_key" /></label>
+            <input type="text" value={key} onChange={e => setKey(e.target.value)} placeholder="Enter secret key…" />
           </div>
-
           <button className="btn btn-primary" onClick={handleEncrypt}>
-            🔒 Encrypt
+            <Lock size={14} /> Encrypt
           </button>
-
           <hr className="divider" />
           <OutputRow label="Encrypted Output (Base64)" infoTerm="base64" value={encrypted} />
         </div>
@@ -198,74 +180,45 @@ export default function SymmetricDemo() {
         {/* Decrypt Panel */}
         <div className="card">
           <div className="card-header">
-            <div className="card-icon green">🔓</div>
+            <div className="card-icon green"><Unlock size={18} strokeWidth={2} /></div>
             <div className="card-title">
               <h2>Decrypt <InfoIcon term="decryption" /></h2>
               <p>Ciphertext → Plaintext</p>
             </div>
           </div>
-
           <div className="form-group">
-            <label>
-              Ciphertext (Base64)
-              <InfoIcon term="ciphertext" />
-            </label>
-            <textarea
-              value={decryptInput}
-              onChange={e => setDecryptInput(e.target.value)}
-              placeholder="Paste encrypted text here…"
-            />
+            <label>Ciphertext (Base64) <InfoIcon term="ciphertext" /></label>
+            <textarea value={decryptInput} onChange={e => setDecryptInput(e.target.value)} placeholder="Paste encrypted text here…" />
           </div>
-
           <div className="form-group">
-            <label>
-              Secret Key (must match)
-              <InfoIcon term="secret_key" />
-            </label>
-            <input
-              type="text"
-              value={key}
-              onChange={e => setKey(e.target.value)}
-              placeholder="Enter secret key…"
-            />
+            <label>Secret Key (must match) <InfoIcon term="secret_key" /></label>
+            <input type="text" value={key} onChange={e => setKey(e.target.value)} placeholder="Enter secret key…" />
           </div>
-
           <button className="btn btn-success" onClick={handleDecrypt}>
-            🔓 Decrypt
+            <Unlock size={14} /> Decrypt
           </button>
-
           <hr className="divider" />
-          <OutputRow
-            label="Decrypted Output"
-            infoTerm="plaintext"
-            value={decrypted}
-            isError={!decrypted && error ? true : false}
-          />
+          <OutputRow label="Decrypted Output" infoTerm="plaintext" value={decrypted} isError={!decrypted && error ? true : false} />
         </div>
       </div>
 
       {/* How it works */}
       <div className="card">
         <div className="card-header">
-          <div className="card-icon orange">📚</div>
-          <div className="card-title">
-            <h2>How Symmetric Encryption Works</h2>
-          </div>
+          <div className="card-icon orange"><BookMarked size={18} strokeWidth={2} /></div>
+          <div className="card-title"><h2>How Symmetric Encryption Works</h2></div>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px,1fr))', gap: 16 }}>
           {[
-            { icon: '🔑', title: 'Single Key', term: 'secret_key', desc: 'One key is used for both encryption and decryption. Both parties must share this key securely.' },
-            { icon: '⚡', title: 'Fast Performance', term: null, desc: 'Much faster than asymmetric encryption. Ideal for encrypting large amounts of data in bulk.' },
-            { icon: '🛡️', title: 'AES Standard', term: 'aes', desc: 'Advanced Encryption Standard (AES) is the gold standard. Used by governments and militaries worldwide.' },
-            { icon: '⚠️', title: 'Key Distribution', term: 'key_exchange', desc: 'The main challenge: securely sharing the secret key with the other party without interception.' },
-          ].map(item => (
-            <div key={item.title} style={{ padding: 16, background: 'var(--surface2)', borderRadius: 8, border: '1px solid var(--border)' }}>
-              <div style={{ fontSize: '1.5rem', marginBottom: 8 }}>{item.icon}</div>
-              <strong style={{ color: 'var(--text)' }}>
-                {item.title}
-                {item.term && <InfoIcon term={item.term} />}
-              </strong>
-              <p style={{ marginTop: 6, fontSize: '0.82rem', color: 'var(--text-muted)' }}>{item.desc}</p>
+            { Icon: Key,           title: 'Single Key',       term: 'secret_key', desc: 'One key is used for both encryption and decryption. Both parties must share this key securely.' },
+            { Icon: Zap,           title: 'Fast Performance', term: null,          desc: 'Much faster than asymmetric encryption. Ideal for encrypting large amounts of data in bulk.' },
+            { Icon: Shield,        title: 'AES Standard',     term: 'aes',         desc: 'Advanced Encryption Standard (AES) is the gold standard. Used by governments and militaries worldwide.' },
+            { Icon: AlertTriangle, title: 'Key Distribution', term: 'key_exchange', desc: 'The main challenge: securely sharing the secret key with the other party without interception.' },
+          ].map(({ Icon, title, term, desc }) => (
+            <div key={title} style={{ padding: 16, background: 'var(--surface2)', borderRadius: 8, border: '1px solid var(--border)' }}>
+              <div style={{ marginBottom: 10 }}><Icon size={22} strokeWidth={1.5} style={{ color: 'var(--accent)' }} /></div>
+              <strong style={{ color: 'var(--text)' }}>{title}{term && <InfoIcon term={term} />}</strong>
+              <p style={{ marginTop: 6, fontSize: '0.82rem', color: 'var(--text-muted)' }}>{desc}</p>
             </div>
           ))}
         </div>

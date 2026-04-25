@@ -1,16 +1,66 @@
-# React + Vite
+# 🛡️ Cryptography Playground
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An open source, browser-based cybersecurity toolkit for interactively exploring cryptographic techniques — no server, no data collection, no setup required.
 
-Currently, two official plugins are available:
+> **Developer:** Daddy Omar Jeng · [www.daddyomarjeng.com](https://www.daddyomarjeng.com)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Modules
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Module | Description |
+|---|---|
+| **Symmetric Encryption** | AES (CBC, ECB, CTR modes) and Triple DES — encrypt/decrypt with a shared key |
+| **Asymmetric Encryption** | RSA key generation, encryption/decryption, and digital signatures |
 
-## Expanding the ESLint configuration
+More cybersecurity modules are planned. Contributions are welcome!
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## Features
+
+- 🔐 **Real algorithms** — powered by production-grade libraries (`crypto-js`, `node-forge`)
+- 🌐 **100% client-side** — all operations run in your browser; no data leaves your machine
+- 📖 **Glossary-driven UI** — every cryptographic term links to an in-context explanation
+- 🧩 **Modular architecture** — each concept is an independent React component
+
+---
+
+## Tech Stack
+
+- [React 18](https://react.dev/) + [Vite](https://vitejs.dev/)
+- [crypto-js](https://github.com/brix/crypto-js) — symmetric encryption (AES, 3DES)
+- [node-forge](https://github.com/digitalbazaar/forge) — asymmetric encryption (RSA, PKI)
+- [lucide-react](https://lucide.dev/) — icons
+
+---
+
+## Getting Started
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+```
+
+---
+
+## Contributing
+
+Pull requests are welcome! To add a new cybersecurity module:
+
+1. Create a new folder under `src/components/`
+2. Build your demo as a self-contained React component
+3. Register it as a new tab in `src/App.jsx`
+
+---
+
+## License
+
+MIT © [Daddy Omar Jeng](https://www.daddyomarjeng.com)
+

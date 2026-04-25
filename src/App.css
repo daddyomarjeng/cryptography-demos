@@ -353,22 +353,22 @@
   padding: 0 6px;
 }
 
-/* ─── UTG Academic Header ────────────────────── */
-.utg-header {
+/* ─── Project Header ─────────────────────────── */
+.project-header {
   border-bottom: 2px solid var(--border);
   margin-bottom: 32px;
   background: linear-gradient(180deg, rgba(88,166,255,0.04) 0%, transparent 100%);
+  padding: 28px 8px 0;
 }
 
-.utg-top-bar {
+.project-header-top {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 24px 8px 16px;
-  gap: 16px;
+  gap: 20px;
+  padding-bottom: 20px;
 }
 
-.utg-crest {
+.project-logo {
   width: 64px;
   height: 64px;
   border-radius: 50%;
@@ -377,78 +377,53 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--accent);
   flex-shrink: 0;
 }
 
-.utg-crest-icon { font-size: 1.8rem; }
-.utg-crest-right { background: rgba(63,185,80,0.1); border-color: rgba(63,185,80,0.25); }
+.project-identity { flex: 1; }
 
-.utg-institution {
-  text-align: center;
-  flex: 1;
-}
-
-.utg-uni-name {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--accent);
-  letter-spacing: 0.3px;
-  margin-bottom: 4px;
-}
-
-.utg-programme {
-  font-size: 0.82rem;
-  color: var(--text-muted);
-}
-
-.utg-divider-line {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border), var(--accent), var(--border), transparent);
-  margin: 0 0 20px;
-}
-
-.utg-title-block {
-  text-align: center;
-  padding: 0 16px 20px;
-}
-
-.utg-module-tag {
+.project-badge {
   display: inline-block;
   background: rgba(88,166,255,0.1);
   border: 1px solid rgba(88,166,255,0.3);
   border-radius: 20px;
   padding: 4px 14px;
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   color: var(--accent);
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
-.utg-title {
-  font-size: 2.4rem;
+.project-title {
+  font-size: 2.2rem;
   font-weight: 700;
-  margin: 0 0 10px;
+  margin: 0 0 8px;
   background: linear-gradient(135deg, #e6edf3, var(--accent));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.utg-subtitle {
+.project-subtitle {
   color: var(--text-muted);
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   margin: 0;
+  max-width: 600px;
+  line-height: 1.6;
 }
 
-.utg-meta-card {
+.project-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), var(--accent), var(--border), transparent);
+  margin: 0 0 0;
+}
+
+.project-meta-bar {
   background: var(--surface);
   border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  padding: 14px 24px;
-}
-
-.utg-meta-row {
+  padding: 12px 24px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -456,14 +431,14 @@
   gap: 12px;
 }
 
-.utg-meta-item {
+.project-meta-item {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2px;
 }
 
-.utg-meta-label {
+.project-meta-label {
   font-size: 0.68rem;
   text-transform: uppercase;
   letter-spacing: 0.8px;
@@ -471,13 +446,24 @@
   font-weight: 600;
 }
 
-.utg-meta-value {
+.project-meta-value {
   font-size: 0.9rem;
   font-weight: 700;
   color: var(--text);
 }
 
-.utg-meta-sep {
+.project-meta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+}
+.project-meta-link:hover { text-decoration: underline; }
+
+.project-meta-sep {
   width: 1px;
   height: 32px;
   background: var(--border);
@@ -488,14 +474,14 @@
   margin-bottom: 32px;
 }
 
-/* ─── UTG Footer ──────────────────────────────── */
-.utg-footer {
+/* ─── Project Footer ──────────────────────────── */
+.project-footer {
   border-top: 1px solid var(--border);
   margin-top: 48px;
   padding: 20px 0;
 }
 
-.utg-footer-inner {
+.project-footer-inner {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -505,7 +491,13 @@
   color: var(--text-muted);
 }
 
-.utg-footer-sep { color: var(--border); }
+.project-footer-sep { color: var(--border); }
+
+.footer-link {
+  color: var(--accent);
+  text-decoration: none;
+}
+.footer-link:hover { text-decoration: underline; }
 
 /* ─── Info Icon Button ────────────────────────── */
 .info-icon-btn {
@@ -626,11 +618,13 @@
 
 /* ─── Responsive ──────────────────────────────── */
 @media (max-width: 600px) {
-  .utg-top-bar { flex-direction: column; }
-  .utg-crest-right { display: none; }
-  .utg-meta-sep { display: none; }
-  .utg-meta-row { gap: 16px; }
-  .utg-title { font-size: 1.6rem; }
-  .utg-footer-inner { flex-direction: column; gap: 4px; }
-  .utg-footer-sep { display: none; }
+  .project-header-top { flex-direction: column; align-items: flex-start; }
+  .project-meta-sep { display: none; }
+  .project-meta-bar { gap: 16px; }
+  .project-title { font-size: 1.6rem; }
+  .project-footer-inner { flex-direction: column; gap: 4px; }
+  .project-footer-sep { display: none; }
 }
+
+.spin { animation: spin 1s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }

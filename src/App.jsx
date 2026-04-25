@@ -1,13 +1,14 @@
 import { useState } from 'react';
+import { Shield, Key, LockKeyhole, BookOpen, Globe } from 'lucide-react';
 import './App.css';
 import SymmetricDemo from './components/symmetric/SymmetricDemo';
 import AsymmetricDemo from './components/asymmetric/AsymmetricDemo';
 import AboutPage from './components/about/AboutPage';
 
 const TABS = [
-  { id: 'symmetric',  label: 'Symmetric Encryption',  icon: '🔑' },
-  { id: 'asymmetric', label: 'Asymmetric Encryption', icon: '🔐' },
-  { id: 'about',      label: 'About & Methods',        icon: '📖' },
+  { id: 'symmetric',  label: 'Symmetric Encryption',  Icon: Key },
+  { id: 'asymmetric', label: 'Asymmetric Encryption', Icon: LockKeyhole },
+  { id: 'about',      label: 'About & Methods',        Icon: BookOpen },
 ];
 
 export default function App() {
@@ -15,53 +16,45 @@ export default function App() {
 
   return (
     <div className="app">
-      {/* ── UTG Academic Cover ────────────────────────────── */}
-      <header className="utg-header">
-        <div className="utg-top-bar">
-          <div className="utg-crest">
-            <span className="utg-crest-icon">🎓</span>
+      {/* ── Project Header ────────────────────────────────── */}
+      <header className="project-header">
+        <div className="project-header-top">
+          <div className="project-logo">
+            <Shield size={32} strokeWidth={1.5} />
           </div>
-          <div className="utg-institution">
-            <div className="utg-uni-name">University of The Gambia</div>
-            <div className="utg-programme">Faculty of Information &amp; Communication Technology</div>
-            <div className="utg-programme">BSc in Information Systems</div>
-          </div>
-          <div className="utg-crest utg-crest-right">
-            <span className="utg-crest-icon">🛡️</span>
+          <div className="project-identity">
+            <div className="project-badge">Open Source · Cybersecurity</div>
+            <h1 className="project-title">Cryptography Playground</h1>
+            <p className="project-subtitle">
+              An interactive, modular toolkit for exploring symmetric and asymmetric encryption techniques — all running locally in your browser.
+            </p>
           </div>
         </div>
 
-        <div className="utg-divider-line" />
+        <div className="project-divider" />
 
-        <div className="utg-title-block">
-          <div className="utg-module-tag">Cybersecurity — Cryptography Module</div>
-          <h1 className="utg-title">Cryptography Playground</h1>
-          <p className="utg-subtitle">
-            An interactive demonstration of symmetric and asymmetric encryption techniques
-          </p>
-        </div>
-
-        <div className="utg-meta-card">
-          <div className="utg-meta-row">
-            <div className="utg-meta-item">
-              <span className="utg-meta-label">Student</span>
-              <span className="utg-meta-value">Omar Jeng</span>
-            </div>
-            <div className="utg-meta-sep" />
-            <div className="utg-meta-item">
-              <span className="utg-meta-label">Matriculation No.</span>
-              <span className="utg-meta-value">21826004</span>
-            </div>
-            <div className="utg-meta-sep" />
-            <div className="utg-meta-item">
-              <span className="utg-meta-label">Lecturer</span>
-              <span className="utg-meta-value">Mr Member Hydara</span>
-            </div>
-            <div className="utg-meta-sep" />
-            <div className="utg-meta-item">
-              <span className="utg-meta-label">Academic Year</span>
-              <span className="utg-meta-value">2020</span>
-            </div>
+        <div className="project-meta-bar">
+          <div className="project-meta-item">
+            <span className="project-meta-label">Developer</span>
+            <span className="project-meta-value">Daddy Omar Jeng</span>
+          </div>
+          <div className="project-meta-sep" />
+          <div className="project-meta-item">
+            <span className="project-meta-label">Website</span>
+            <a
+              href="https://www.daddyomarjeng.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="project-meta-link"
+            >
+              <Globe size={12} />
+              www.daddyomarjeng.com
+            </a>
+          </div>
+          <div className="project-meta-sep" />
+          <div className="project-meta-item">
+            <span className="project-meta-label">License</span>
+            <span className="project-meta-value">MIT</span>
           </div>
         </div>
       </header>
@@ -69,14 +62,14 @@ export default function App() {
       {/* ── Navigation Tabs ───────────────────────────────── */}
       <div className="tabs-wrapper">
         <div className="tabs">
-          {TABS.map(tab => (
+          {TABS.map(({ id, label, Icon }) => (
             <button
-              key={tab.id}
-              className={`tab-btn ${activeTab === tab.id ? 'active' : ''}`}
-              onClick={() => setActiveTab(tab.id)}
+              key={id}
+              className={`tab-btn ${activeTab === id ? 'active' : ''}`}
+              onClick={() => setActiveTab(id)}
             >
-              <span>{tab.icon}</span>
-              {tab.label}
+              <Icon size={15} strokeWidth={2} />
+              {label}
             </button>
           ))}
         </div>
@@ -90,13 +83,15 @@ export default function App() {
       </main>
 
       {/* ── Footer ────────────────────────────────────────── */}
-      <footer className="utg-footer">
-        <div className="utg-footer-inner">
-          <span>🎓 University of The Gambia &nbsp;·&nbsp; BSc Information Systems</span>
-          <span className="utg-footer-sep">|</span>
-          <span>Omar Jeng &nbsp;·&nbsp; Mat# 21826004 &nbsp;·&nbsp; 2020</span>
-          <span className="utg-footer-sep">|</span>
-          <span>�� All operations run locally in your browser</span>
+      <footer className="project-footer">
+        <div className="project-footer-inner">
+          <span>Daddy Omar Jeng &nbsp;·&nbsp; <a href="https://www.daddyomarjeng.com" target="_blank" rel="noopener noreferrer" className="footer-link">www.daddyomarjeng.com</a></span>
+          <span className="project-footer-sep">|</span>
+          <span>Open Source · MIT License</span>
+          <span className="project-footer-sep">|</span>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+            <Shield size={13} /> All operations run locally in your browser
+          </span>
         </div>
       </footer>
     </div>
