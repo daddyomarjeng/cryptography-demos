@@ -3,7 +3,6 @@ import {
   Shield,
   Key,
   LockKeyhole,
-  BookOpen,
   Globe,
   Hash,
   Fingerprint,

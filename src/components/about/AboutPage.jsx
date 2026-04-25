@@ -715,15 +715,15 @@ export default function AboutPage() {
             },
             {
               org: "Zigtech",
-              role: "Software Engineer",
+              role: "Head of Application Development (Remote)",
               period: "Feb 2022 — Present",
               color: "var(--accent2)",
               badge: null,
-              desc: "Led a team of mobile developers delivering solutions for government and private sector clients. Architected systems including a digital procurement platform for the Gambia Public Procurement Authority and a police workflow system for the Gambia Police Force. Developed fintech products including Zapp, a super app for money transfer and bill payments. Designed secure backend services using Node.js and TypeORM.",
+              desc: "Lead a team of mobile developers delivering solutions for government and private sector clients. Architected systems including a digital procurement platform for the Gambia Public Procurement Authority and a police workflow system for the Gambia Police Force. Developed fintech products including Zapp, a super app for money transfer and bill payments. Designed secure backend services using Node.js and TypeORM.",
             },
             {
               org: "LLA Media",
-              role: "Software Developer",
+              role: "Software Developer (Contract)",
               period: "May 2023 — Sep 2023 (ongoing maintenance)",
               color: "var(--text-muted)",
               badge: null,
