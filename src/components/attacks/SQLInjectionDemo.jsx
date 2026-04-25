@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Database, AlertTriangle, CheckCircle } from 'lucide-react';
+import { Database, AlertTriangle, CheckCircle, BookMarked, Play } from 'lucide-react';
+import InfoIcon from '../shared/InfoIcon';
 
 // Simulated database of users
 const DB_USERS = [
@@ -56,6 +57,45 @@ const SAFE_PRESETS = [
   { label: "Injection attempt (blocked)", user: "' OR '1'='1", pass: "' OR '1'='1" },
 ];
 
+const PAYLOAD_REFERENCE = [
+  {
+    name: 'Classic Bypass',
+    payload: "' OR '1'='1",
+    field: 'Both username & password',
+    resultingSQL: `SELECT * FROM users WHERE username = '' OR '1'='1' AND password = '' OR '1'='1'`,
+    how: "Appends an OR condition that is always true ('1'='1') to both fields. The WHERE clause becomes true for every row — the attacker gets in as the first user without knowing any credentials.",
+    color: 'var(--danger)',
+    preset: { user: "' OR '1'='1", pass: "' OR '1'='1" },
+  },
+  {
+    name: 'Admin Bypass',
+    payload: "admin'--",
+    field: 'Username field',
+    resultingSQL: `SELECT * FROM users WHERE username = 'admin'-- ' AND password = '...'`,
+    how: "The -- sequence starts a SQL comment, causing everything after it to be ignored — including the password check. The attacker logs in as any known username (e.g. admin) without needing the password.",
+    color: 'var(--danger)',
+    preset: { user: "admin'--", pass: "anything" },
+  },
+  {
+    name: 'Always-true WHERE',
+    payload: "' OR 1=1--",
+    field: 'Password field',
+    resultingSQL: `SELECT * FROM users WHERE username = 'alice' AND password = '' OR 1=1--'`,
+    how: "Injects a numeric always-true condition (1=1) and comments out the rest of the query. Works even when the username is known, since the password check is completely bypassed.",
+    color: 'var(--warning)',
+    preset: { user: "alice", pass: "' OR 1=1--" },
+  },
+  {
+    name: 'Comment Injection',
+    payload: "' OR 1=1/*",
+    field: 'Username field',
+    resultingSQL: `SELECT * FROM users WHERE username = '' OR 1=1/* ' AND password = '...'`,
+    how: "Uses /* block comment syntax instead of -- to achieve the same result. Useful when an application filters double-dash comments but doesn't strip block comments.",
+    color: 'var(--warning)',
+    preset: { user: "' OR 1=1/*", pass: "" },
+  },
+];
+
 export default function SQLInjectionDemo() {
   const [username, setUsername] = useState('alice');
   const [password, setPassword] = useState('secret123');
@@ -76,6 +116,16 @@ export default function SQLInjectionDemo() {
 
   return (
     <div>
+      <div className="info-box">
+        <strong>SQL Injection</strong>
+        <InfoIcon term="sql_injection" />
+        {' '}occurs when untrusted user input is embedded directly into an SQL query string.
+        The database cannot tell the difference between code and data — so the injected SQL
+        gets executed. The fix is always to use <strong>parameterized queries</strong>
+        <InfoIcon term="parameterized_query" />
+        {' '}(prepared statements), which separate code from data completely.
+      </div>
+
       <div className="card">
         <div className="card-header">
           <div className="card-icon red"><Database size={18} strokeWidth={2} /></div>
@@ -192,6 +242,67 @@ export default function SQLInjectionDemo() {
             </div>
           </div>
         )}
+      </div>
+
+      {/* Payload Reference */}
+      <div className="card">
+        <div className="card-header">
+          <div className="card-icon red"><BookMarked size={18} strokeWidth={2} /></div>
+          <div className="card-title">
+            <h2>Injection Payload Reference</h2>
+            <p>How each attack payload works — and why</p>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          {PAYLOAD_REFERENCE.map(({ name, payload, field, resultingSQL, how, color, preset }) => (
+            <div key={name} style={{ padding: 16, borderRadius: 8, background: 'var(--surface2)', border: `1px solid var(--border)` }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8, marginBottom: 10 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <strong style={{ color, fontSize: '0.95rem' }}>{name}</strong>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', background: 'var(--surface)', padding: '2px 8px', borderRadius: 4, border: '1px solid var(--border)' }}>
+                    {field}
+                  </span>
+                </div>
+                <button
+                  className="btn btn-outline"
+                  style={{ fontSize: '0.75rem', padding: '4px 12px', borderColor: color, color }}
+                  onClick={() => { applyPreset(preset); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                >
+                  <Play size={11} style={{ marginRight: 4 }} /> Try it
+                </button>
+              </div>
+
+              <div style={{ marginBottom: 8 }}>
+                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginBottom: 4 }}>Payload</div>
+                <code style={{ display: 'block', padding: '6px 10px', background: 'var(--surface)', borderRadius: 6, border: `1px solid ${color}44`, fontSize: '0.82rem', color, wordBreak: 'break-all' }}>
+                  {payload}
+                </code>
+              </div>
+
+              <div style={{ marginBottom: 8 }}>
+                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginBottom: 4 }}>Resulting SQL</div>
+                <code style={{ display: 'block', padding: '6px 10px', background: 'var(--surface)', borderRadius: 6, border: '1px solid var(--border)', fontSize: '0.76rem', color: 'var(--text-muted)', wordBreak: 'break-all' }}>
+                  {resultingSQL}
+                </code>
+              </div>
+
+              <div style={{ fontSize: '0.82rem', color: 'var(--text)', lineHeight: 1.55 }}>
+                <span style={{ color: 'var(--text-muted)', fontWeight: 600 }}>How it works: </span>{how}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ marginTop: 20, padding: 14, borderRadius: 8, background: 'rgba(63,185,80,0.07)', border: '1px solid rgba(63,185,80,0.3)', fontSize: '0.82rem' }}>
+          <strong style={{ color: 'var(--accent2)' }}>✅ Prevention: </strong>
+          <span style={{ color: 'var(--text)' }}>
+            Always use <strong>parameterized queries</strong>
+            <InfoIcon term="parameterized_query" />
+            {' '}or an ORM. Never concatenate user input into SQL strings. Input validation and WAFs
+            help but are not substitutes for parameterized queries.
+          </span>
+        </div>
       </div>
     </div>
   );
