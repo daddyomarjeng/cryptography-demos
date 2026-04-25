@@ -83,4 +83,32 @@ export const GLOSSARY = {
     title: 'Secret Key',
     body: 'In symmetric cryptography, the secret key (or shared key) is a piece of data known only to the communicating parties. It is used to both encrypt and decrypt messages. The secrecy of the communication depends entirely on keeping this key confidential. Key management and secure distribution are critical challenges.',
   },
+  hash_function: {
+    title: 'Hash Function',
+    body: 'A cryptographic hash function takes any input (a message, file, or data) and produces a fixed-size output called a digest or hash. Key properties: it is one-way (you cannot reverse a hash), deterministic (same input always gives the same hash), and collision-resistant (practically impossible to find two different inputs that produce the same hash). Examples: SHA-256, SHA-512.',
+  },
+  avalanche_effect: {
+    title: 'Avalanche Effect',
+    body: 'The avalanche effect is a property of hash functions and ciphers where a tiny change in the input (even flipping a single bit) causes a drastic, unpredictable change in the output — typically around 50% of the output bits change. This property ensures that similar inputs do not produce similar outputs, making pattern analysis infeasible.',
+  },
+  hmac: {
+    title: 'HMAC — Hash-based Message Authentication Code',
+    body: 'HMAC is a construction that combines a cryptographic hash function with a secret key to produce a message authentication code (MAC). It provides both integrity (the message was not modified) and authenticity (the sender possesses the secret key). Unlike a plain hash, an attacker who does not know the key cannot forge a valid HMAC. Widely used in JWT tokens, API authentication, and TLS.',
+  },
+  bcrypt: {
+    title: 'bcrypt',
+    body: 'bcrypt is a password hashing algorithm designed to be intentionally slow. It incorporates a salt to prevent rainbow table attacks and a configurable cost factor (work factor) that makes computation increasingly expensive. Each increment of the cost factor roughly doubles the hashing time, making it adaptable to faster hardware over time. Never use fast hash functions (MD5, SHA-256) for passwords.',
+  },
+  pbkdf2: {
+    title: 'PBKDF2 — Password-Based Key Derivation Function 2',
+    body: 'PBKDF2 is a key stretching algorithm that applies a pseudorandom function (typically HMAC-SHA256) to the input password along with a salt, repeating the process many times (iterations). More iterations means more time and computation required to check each password guess — greatly slowing down brute-force attacks. NIST recommends at least 600,000 iterations with HMAC-SHA256 (as of 2023).',
+  },
+  salt: {
+    title: 'Salt (Cryptographic)',
+    body: 'A salt is random data added to a password before hashing. Each password gets a unique salt, so even if two users have the same password, their stored hashes will differ. Salting defeats pre-computed attacks like rainbow tables because an attacker would need to recompute hashes separately for each salt value. Salts do not need to be secret — they are stored alongside the hash.',
+  },
+  key_exchange: {
+    title: 'Key Exchange',
+    body: 'Key exchange (or key establishment) is the process by which two parties securely agree on a shared secret key over an insecure channel. With symmetric encryption, both parties must somehow share the same secret key without an attacker intercepting it. Common solutions include Diffie-Hellman key exchange, RSA key transport, or using a pre-shared key. This is the fundamental challenge of symmetric cryptography.',
+  },
 };
