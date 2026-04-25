@@ -21,13 +21,18 @@ function encrypt(plaintext, key, mode) {
 
 function decrypt(ciphertext, key, mode) {
   try {
+    let wordArray;
     if (mode === 'TDES') {
-      return CryptoJS.TripleDES.decrypt(ciphertext, key).toString(CryptoJS.enc.Utf8);
+      wordArray = CryptoJS.TripleDES.decrypt(ciphertext, key);
+    } else {
+      const opts = {};
+      if (mode === 'ECB') opts.mode = CryptoJS.mode.ECB;
+      if (mode === 'CTR') opts.mode = CryptoJS.mode.CTR;
+      wordArray = CryptoJS.AES.decrypt(ciphertext, key, opts);
     }
-    const opts = {};
-    if (mode === 'ECB') opts.mode = CryptoJS.mode.ECB;
-    if (mode === 'CTR') opts.mode = CryptoJS.mode.CTR;
-    return CryptoJS.AES.decrypt(ciphertext, key, opts).toString(CryptoJS.enc.Utf8);
+    if (!wordArray || !wordArray.sigBytes || wordArray.sigBytes <= 0) return null;
+    const result = wordArray.toString(CryptoJS.enc.Utf8);
+    return result || null;
   } catch {
     return null;
   }
@@ -62,29 +67,30 @@ export default function SymmetricDemo() {
   const [encrypted, setEncrypted] = useState('');
   const [decrypted, setDecrypted] = useState('');
   const [decryptInput, setDecryptInput] = useState('');
-  const [error, setError] = useState('');
+  const [encryptError, setEncryptError] = useState('');
+  const [decryptError, setDecryptError] = useState('');
 
   const handleEncrypt = () => {
-    setError('');
-    if (!plaintext.trim()) { setError('Please enter a plaintext message.'); return; }
-    if (!key.trim()) { setError('Please enter a secret key.'); return; }
+    setEncryptError('');
+    if (!plaintext.trim()) { setEncryptError('Please enter a plaintext message first.'); return; }
+    if (!key.trim()) { setEncryptError('Please enter a secret key.'); return; }
     try {
       const result = encrypt(plaintext, key, mode);
       setEncrypted(result);
       setDecryptInput(result);
       setDecrypted('');
     } catch (e) {
-      setError('Encryption failed: ' + e.message);
+      setEncryptError('Encryption failed: ' + e.message);
     }
   };
 
   const handleDecrypt = () => {
-    setError('');
-    if (!decryptInput.trim()) { setError('Please enter ciphertext to decrypt.'); return; }
-    if (!key.trim()) { setError('Please enter the secret key.'); return; }
+    setDecryptError('');
+    if (!decryptInput.trim()) { setDecryptError('Please enter a ciphertext first.'); return; }
+    if (!key.trim()) { setDecryptError('Please enter the secret key.'); return; }
     const result = decrypt(decryptInput, key, mode);
     if (!result) {
-      setError('Decryption failed. Check the key and ciphertext.');
+      setDecryptError('Decryption failed — wrong key or corrupted ciphertext.');
       setDecrypted('');
     } else {
       setDecrypted(result);
@@ -140,7 +146,7 @@ export default function SymmetricDemo() {
             <span key={m.value} style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
               <button
                 className={`btn ${mode === m.value ? 'btn-primary' : 'btn-outline'}`}
-                onClick={() => { setMode(m.value); setEncrypted(''); setDecrypted(''); setError(''); }}
+                onClick={() => { setMode(m.value); setEncrypted(''); setDecrypted(''); setEncryptError(''); setDecryptError(''); }}
               >
                 {m.label}
               </button>
@@ -149,8 +155,6 @@ export default function SymmetricDemo() {
           ))}
         </div>
       </div>
-
-      {error && <div className="output-box error-text" style={{ marginBottom: 16 }}>⚠ {error}</div>}
 
       <div className="two-col">
         {/* Encrypt Panel */}
@@ -173,6 +177,9 @@ export default function SymmetricDemo() {
           <button className="btn btn-primary" onClick={handleEncrypt}>
             <Lock size={14} /> Encrypt
           </button>
+          {encryptError && (
+            <div className="output-box error-text" style={{ marginTop: 12 }}>⚠ {encryptError}</div>
+          )}
           <hr className="divider" />
           <OutputRow label="Encrypted Output (Base64)" infoTerm="base64" value={encrypted} />
         </div>
@@ -197,8 +204,11 @@ export default function SymmetricDemo() {
           <button className="btn btn-success" onClick={handleDecrypt}>
             <Unlock size={14} /> Decrypt
           </button>
+          {decryptError && (
+            <div className="output-box error-text" style={{ marginTop: 12 }}>⚠ {decryptError}</div>
+          )}
           <hr className="divider" />
-          <OutputRow label="Decrypted Output" infoTerm="plaintext" value={decrypted} isError={!decrypted && error ? true : false} />
+          <OutputRow label="Decrypted Output" infoTerm="plaintext" value={decrypted} isError={!decrypted && !!decryptError} />
         </div>
       </div>
 
