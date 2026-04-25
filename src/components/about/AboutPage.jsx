@@ -1,4 +1,11 @@
-import { Target, Trophy, Settings2, Package, Wrench, Check, User, Globe } from 'lucide-react';
+import { Target, Trophy, Settings2, Package, Wrench, Check, User, Globe, GraduationCap, Briefcase } from 'lucide-react';
+
+const LinkedinIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+    <rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+  </svg>
+);
 
 export default function AboutPage() {
   return (
@@ -23,13 +30,26 @@ export default function AboutPage() {
             each cybersecurity concept is encapsulated as an independent module, making it easy to extend,
             contribute to, or learn from.
           </p>
-          <p style={{ marginBottom: 12 }}>
-            Current modules:
-          </p>
-          <ul style={{ paddingLeft: 20, marginBottom: 12 }}>
-            <li><strong style={{ color: 'var(--text)' }}>Symmetric Encryption</strong> — AES (CBC, ECB, CTR modes) and Triple DES</li>
-            <li><strong style={{ color: 'var(--text)' }}>Asymmetric Encryption</strong> — RSA key generation, encryption/decryption, and digital signatures</li>
-          </ul>
+          <p style={{ marginBottom: 12 }}>17 interactive modules across 6 categories:</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px,1fr))', gap: 10, marginBottom: 12 }}>
+            {[
+              { cat: '🔐 Cryptography', items: ['Symmetric Encryption (AES, 3DES)', 'Asymmetric Encryption (RSA)'] },
+              { cat: '🔑 Hashing & Integrity', items: ['Hash Functions (MD5–SHA-512)', 'HMAC', 'Password Hashing (bcrypt/PBKDF2)'] },
+              { cat: '🔠 Encoding & Obfuscation', items: ['Encoding Playground (Base64/Hex/URL)', 'Caesar / ROT13 Cipher', 'Steganography (LSB)'] },
+              { cat: '🌐 Network & Web Security', items: ['JWT Tokens', 'TLS 1.3 Handshake', 'CORS & CSP Simulator'] },
+              { cat: '🛡️ Attack Demonstrations', items: ['Brute Force Visualizer', 'SQL Injection Demo', 'XSS Playground'] },
+              { cat: '🔢 Math Behind Crypto', items: ['Diffie-Hellman Key Exchange', 'Elliptic Curve (ECDH/ECDSA)', 'Prime & Modular Arithmetic'] },
+            ].map(g => (
+              <div key={g.cat} style={{ padding: 12, background: 'var(--surface2)', borderRadius: 8, border: '1px solid var(--border)' }}>
+                <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--accent)', marginBottom: 8 }}>{g.cat}</div>
+                {g.items.map(i => (
+                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: 4 }}>
+                    <Check size={11} strokeWidth={2.5} style={{ color: 'var(--accent2)', flexShrink: 0 }} /> {i}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
           <p>
             All cryptographic operations execute entirely within the user's browser. No data is transmitted to any
             server, making this tool safe for experimentation and learning.
@@ -220,28 +240,125 @@ export default function AboutPage() {
             <p>About the author of this project</p>
           </div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
-          <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'rgba(88,166,255,0.1)', border: '2px solid rgba(88,166,255,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-            <User size={28} style={{ color: 'var(--accent)' }} />
+
+        {/* Identity row */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap', marginBottom: 20 }}>
+          <div style={{ width: 68, height: 68, borderRadius: '50%', background: 'rgba(88,166,255,0.1)', border: '2px solid rgba(88,166,255,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <User size={30} style={{ color: 'var(--accent)' }} />
           </div>
           <div>
-            <strong style={{ color: 'var(--text)', fontSize: '1.1rem' }}>Daddy Omar Jeng</strong>
-            <div style={{ marginTop: 6, display: 'flex', alignItems: 'center', gap: 6 }}>
-              <Globe size={14} style={{ color: 'var(--accent)' }} />
-              <a
-                href="https://www.daddyomarjeng.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: 'var(--accent)', fontSize: '0.9rem', textDecoration: 'none' }}
-              >
-                www.daddyomarjeng.com
+            <strong style={{ color: 'var(--text)', fontSize: '1.15rem' }}>Daddy Omar Jeng</strong>
+            <div style={{ marginTop: 8, display: 'flex', flexWrap: 'wrap', gap: 14 }}>
+              <a href="https://www.daddyomarjeng.com" target="_blank" rel="noopener noreferrer"
+                style={{ display: 'flex', alignItems: 'center', gap: 5, color: 'var(--accent)', fontSize: '0.88rem', textDecoration: 'none' }}>
+                <Globe size={13} /> www.daddyomarjeng.com
+              </a>
+              <a href="https://www.linkedin.com/in/daddyomarjeng" target="_blank" rel="noopener noreferrer"
+                style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#0A66C2', fontSize: '0.88rem', textDecoration: 'none' }}>
+                <LinkedinIcon /> linkedin.com/in/daddyomarjeng
               </a>
             </div>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: 8, lineHeight: 1.7, maxWidth: 520 }}>
-              Builder of open source cybersecurity tools and interactive learning resources.
-              This project is part of a growing collection of modular, browser-based security demos.
-            </p>
           </div>
+        </div>
+
+        {/* Education */}
+        <div style={{ marginBottom: 24 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+            <GraduationCap size={16} style={{ color: 'var(--accent2)' }} />
+            <strong style={{ color: 'var(--text)', fontSize: '0.95rem' }}>Education</strong>
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            {[
+              'BSc in Information Systems',
+              'HND in Computer Science',
+              'Certificate in Information Processing',
+              'Diploma in Information Processing',
+            ].map(e => (
+              <span key={e} style={{ padding: '5px 12px', borderRadius: 20, background: 'rgba(88,166,255,0.08)', border: '1px solid rgba(88,166,255,0.2)', color: 'var(--accent)', fontSize: '0.8rem' }}>{e}</span>
+            ))}
+          </div>
+        </div>
+
+        {/* Work History */}
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+            <Briefcase size={16} style={{ color: 'var(--accent2)' }} />
+            <strong style={{ color: 'var(--text)', fontSize: '0.95rem' }}>Work History</strong>
+          </div>
+
+          {[
+            {
+              org: 'Gambia Information and Communication Technology Agency (GICTA)',
+              role: 'ICT Standards & Architecture Specialist',
+              period: 'Dec 2025 — Present',
+              color: 'var(--accent)',
+              badge: 'Current',
+              desc: 'Defines and reviews government digital systems for compliance with national ICT standards, cybersecurity frameworks, and interoperability requirements. Evaluates ICT projects, designs reference architectures, and supports enterprise integration across Ministries and Agencies. Develops key internal government systems and provides technical guidance to implement scalable, secure, and interoperable digital platforms.',
+            },
+            {
+              org: 'Pay Connect',
+              role: 'Software Engineer (Remote)',
+              period: 'Apr 2025 — Present',
+              color: 'var(--accent)',
+              badge: 'Current',
+              desc: 'Led development of the APS International App — a mobile platform enabling customers in Europe to send money and digital services to recipients across Africa. Engineered secure and scalable features for remittances, airtime top-ups, utility bill payments (electricity, water), wallet and bank transfers, and e-commerce for family shopping with local delivery.',
+            },
+            {
+              org: 'Zigtech',
+              role: 'Software Engineer',
+              period: 'Feb 2022 — Present',
+              color: 'var(--accent2)',
+              badge: null,
+              desc: 'Led a team of mobile developers delivering solutions for government and private sector clients. Architected systems including a digital procurement platform for the Gambia Public Procurement Authority and a police workflow system for the Gambia Police Force. Developed fintech products including Zapp, a super app for money transfer and bill payments. Designed secure backend services using Node.js and TypeORM.',
+            },
+            {
+              org: 'LLA Media',
+              role: 'Software Developer',
+              period: 'May 2023 — Sep 2023 (ongoing maintenance)',
+              color: 'var(--text-muted)',
+              badge: null,
+              desc: 'Lead developer of the Zax Medical App, a cross-platform mobile application for doctors and patients to manage appointments, document uploads, and clinical records. Includes admin tools for managing doctors, patients, and appointments, with support for remote updates and secure backend integrations.',
+            },
+            {
+              org: 'Innovative Technology Group (ITG)',
+              role: 'Software Developer',
+              period: 'Apr 2021 — Jan 2022',
+              color: 'var(--text-muted)',
+              badge: null,
+              desc: 'Upgraded legacy web and mobile projects for performance and maintainability. Developed APIs for the Gambia Transport Service Company (GTSC) enabling bus ticket purchases via GTBank and third-party vendors. Contributed to electricity vending systems (Transact TX & Chapman) integrated with NAWEC. Co-developed the BSE Africa e-commerce platform with responsive web and mobile interfaces.',
+            },
+            {
+              org: 'Living Children Academy',
+              role: 'ICT Teacher',
+              period: 'Jan 2021 — Jun 2021',
+              color: 'var(--text-muted)',
+              badge: null,
+              desc: 'Delivered practical and theoretical ICT instruction at primary and junior secondary levels. Designed lesson plans covering computer fundamentals, typing, file management, safe internet usage, and productivity tools (Word, Excel, PowerPoint). Fostered digital literacy and early interest in technology.',
+            },
+          ].map((job, i) => (
+            <div key={i} style={{ display: 'flex', gap: 16, marginBottom: 20 }}>
+              {/* Timeline line */}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
+                <div style={{ width: 10, height: 10, borderRadius: '50%', background: job.color, marginTop: 4, flexShrink: 0 }} />
+                {i < 5 && <div style={{ width: 2, flex: 1, background: 'var(--border)', marginTop: 4 }} />}
+              </div>
+              <div style={{ paddingBottom: 4 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 4 }}>
+                  <strong style={{ color: 'var(--text)', fontSize: '0.9rem' }}>{job.org}</strong>
+                  {job.badge && (
+                    <span style={{ padding: '2px 8px', borderRadius: 10, background: 'rgba(63,185,80,0.12)', border: '1px solid rgba(63,185,80,0.3)', color: 'var(--accent2)', fontSize: '0.72rem', fontWeight: 600 }}>
+                      {job.badge}
+                    </span>
+                  )}
+                </div>
+                <div style={{ display: 'flex', gap: 12, marginBottom: 6, flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: '0.82rem', color: job.color, fontWeight: 600 }}>{job.role}</span>
+                  <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>· {job.period}</span>
+                </div>
+                <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: 1.7, margin: 0 }}>{job.desc}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
