@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import CryptoJS from 'crypto-js';
 import { Hash, Zap, Copy, Check } from 'lucide-react';
+import InfoIcon from '../shared/InfoIcon';
 
 const ALGORITHMS = [
   { id: 'MD5',    label: 'MD5',    bits: 128, fn: v => CryptoJS.MD5(v).toString(),    warn: true },
@@ -43,42 +44,17 @@ export default function HashFunctionsDemo() {
 
   return (
     <div>
-      <div className="card">
-        <div className="card-header">
-          <div className="card-icon blue"><Hash size={18} strokeWidth={2} /></div>
-          <div className="card-title">
-            <h2>Hash Functions</h2>
-            <p>MD5 · SHA-1 · SHA-256 · SHA-512</p>
-          </div>
-        </div>
-
-        <div className="info-box">
-          A <strong>hash function</strong> maps any input to a fixed-size digest. Even a tiny change in input
-          produces a completely different output — this is the <strong>avalanche effect</strong>.
-          MD5 and SHA-1 are cryptographically broken; prefer SHA-256 or SHA-512 for security.
-        </div>
-
-        <div className="form-group">
-          <label>Input Message</label>
-          <textarea value={input} onChange={e => setInput(e.target.value)} rows={3} />
-        </div>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-          {hashes.map(({ id, label, bits, digest, warn }) => (
-            <div key={id} style={{ padding: 16, background: 'var(--surface2)', borderRadius: 8, border: `1px solid ${warn ? 'rgba(248,81,73,0.25)' : 'var(--border)'}` }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-                <strong style={{ color: warn ? 'var(--danger)' : 'var(--accent)', fontSize: '0.9rem' }}>{label}</strong>
-                <span className={`badge ${warn ? 'badge-red' : 'badge-green'}`}>{bits} bits</span>
-                {warn && <span className="badge badge-red">⚠ Deprecated</span>}
-              </div>
-              <div className="output-label">
-                Digest (hex)
-                <CopyBtn text={digest} />
-              </div>
-              <div className="output-box" style={{ fontSize: '0.78rem' }}>{digest}</div>
-            </div>
-          ))}
-        </div>
+      <div className="info-box">
+        A <strong>hash function</strong>
+        <InfoIcon term="hash_function" />
+        {' '}converts any input into a fixed-size fingerprint called a <strong>digest</strong>. Hash functions
+        are <strong>one-way</strong> — you cannot reverse a hash to recover the original input — and
+        {' '}<strong>deterministic</strong> (same input always gives the same output). Even a tiny change causes
+        a completely different digest: the <strong>avalanche effect</strong>
+        <InfoIcon term="avalanche_effect" />.
+        MD5 and SHA-1 are broken; use <strong>SHA-256</strong>
+        <InfoIcon term="sha256" />
+        {' '}or SHA-512 for security.
       </div>
 
       {/* Avalanche Effect */}
@@ -123,6 +99,38 @@ export default function HashFunctionsDemo() {
             </div>
           );
         })}
+      </div>
+
+      <div className="card">
+        <div className="card-header">
+          <div className="card-icon blue"><Hash size={18} strokeWidth={2} /></div>
+          <div className="card-title">
+            <h2>Hash Functions</h2>
+            <p>MD5 · SHA-1 · SHA-256 · SHA-512</p>
+          </div>
+        </div>
+
+        <div className="form-group">
+          <label>Input Message</label>
+          <textarea value={input} onChange={e => setInput(e.target.value)} rows={3} />
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          {hashes.map(({ id, label, bits, digest, warn }) => (
+            <div key={id} style={{ padding: 16, background: 'var(--surface2)', borderRadius: 8, border: `1px solid ${warn ? 'rgba(248,81,73,0.25)' : 'var(--border)'}` }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+                <strong style={{ color: warn ? 'var(--danger)' : 'var(--accent)', fontSize: '0.9rem' }}>{label}</strong>
+                <span className={`badge ${warn ? 'badge-red' : 'badge-green'}`}>{bits} bits</span>
+                {warn && <span className="badge badge-red">⚠ Deprecated</span>}
+              </div>
+              <div className="output-label">
+                Digest (hex)
+                <CopyBtn text={digest} />
+              </div>
+              <div className="output-box" style={{ fontSize: '0.78rem' }}>{digest}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
