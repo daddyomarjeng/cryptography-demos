@@ -1,4 +1,4 @@
-import { Target, Trophy, Settings2, Package, Wrench, Check, User, Globe, GraduationCap, Briefcase } from 'lucide-react';
+import { Target, Trophy, Settings2, Package, Wrench, Check, User, Globe, GraduationCap, Briefcase, Mail, ExternalLink } from 'lucide-react';
 
 const LinkedinIcon = () => (
   <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
@@ -359,6 +359,74 @@ export default function AboutPage() {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Hire Me / Get in Touch */}
+      <div style={{
+        borderRadius: 12,
+        padding: 2,
+        background: 'linear-gradient(135deg, rgba(88,166,255,0.6), rgba(63,185,80,0.5), rgba(210,153,34,0.4))',
+        marginBottom: 0,
+      }}>
+        <div style={{ borderRadius: 10, background: 'var(--surface)', padding: '32px 28px' }}>
+          <div style={{ textAlign: 'center', marginBottom: 24 }}>
+            <div style={{ fontSize: '2rem', marginBottom: 8 }}>👋</div>
+            <h2 style={{ margin: '0 0 8px', fontSize: '1.4rem', color: 'var(--text)' }}>Open to Work & Collaboration</h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', lineHeight: 1.8, maxWidth: 560, margin: '0 auto 20px' }}>
+              I'm a full-stack software engineer with experience building fintech products, government digital platforms,
+              and cross-platform mobile apps. Whether you need a collaborator on an open source project,
+              a freelance engineer, or a full-time hire — I'd love to hear from you.
+            </p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 8, marginBottom: 24 }}>
+              {['Full-Stack Development', 'Mobile Apps (React Native)', 'Backend APIs (Node.js)', 'Fintech & Payments', 'Open to Remote'].map(tag => (
+                <span key={tag} style={{
+                  padding: '4px 14px', borderRadius: 20, fontSize: '0.78rem',
+                  background: 'rgba(88,166,255,0.08)', border: '1px solid rgba(88,166,255,0.2)', color: 'var(--accent)',
+                }}>{tag}</span>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 12 }}>
+            <a
+              href="https://www.daddyomarjeng.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 8,
+                padding: '11px 22px', borderRadius: 8, textDecoration: 'none',
+                background: 'var(--accent)', color: '#0d1117', fontWeight: 700, fontSize: '0.9rem',
+              }}
+            >
+              <Globe size={16} /> View Portfolio
+            </a>
+
+            <a
+              href="https://www.linkedin.com/in/daddyomarjeng"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 8,
+                padding: '11px 22px', borderRadius: 8, textDecoration: 'none',
+                background: '#0A66C2', color: '#fff', fontWeight: 700, fontSize: '0.9rem',
+              }}
+            >
+              <LinkedinIcon /> Connect on LinkedIn
+            </a>
+
+            <a
+              href="mailto:daddyomarjeng1@gmail.com"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 8,
+                padding: '11px 22px', borderRadius: 8, textDecoration: 'none',
+                background: 'var(--surface2)', border: '1px solid var(--border)',
+                color: 'var(--text)', fontWeight: 600, fontSize: '0.9rem',
+              }}
+            >
+              <Mail size={16} /> daddyomarjeng1@gmail.com
+            </a>
+          </div>
         </div>
       </div>
 
